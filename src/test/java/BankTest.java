@@ -1,4 +1,6 @@
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.apache.log4j.LogManager;
@@ -19,14 +21,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
-@Listeners(BankTestListeners.class)
 public class BankTest {
 
     protected static Logger log;
     protected static WebDriver driver;
     protected static Random rand;
-    protected static ExtentReports extentReports;
-    protected static ExtentSparkReporter sparkReporter;
     protected int MAX_VALUE = 10000;
     String url = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
 
@@ -43,9 +42,6 @@ public class BankTest {
     public void setup() throws FileNotFoundException {
         System.setProperty("webdriver.chrome.driver", "C:\\Software\\Selenium\\Chrome Driver\\chromedriver.exe");
         driver = new ChromeDriver();
-        extentReports = new ExtentReports();
-        sparkReporter = new ExtentSparkReporter("BankTest.html");
-        extentReports.attachReporter(sparkReporter);
 
         loginPage = new LoginPage(driver);
         managerPage = new ManagerPage(driver);
@@ -81,7 +77,6 @@ public class BankTest {
         managerPage.clickProcess();
         managerPage.getAccountNumber(accountDetail);
         managerPage.acceptAlert();
-        extentReports.createTest("Add User").log(Status.PASS, "Successfully Added User");
     }
     @Test(priority = 3)
     public void verifyAccountNumber(){
@@ -129,13 +124,21 @@ public class BankTest {
         Assert.assertTrue(condition);
     }
 
-    public void takeScreenShot(String name, String status) throws IOException {
-        TakesScreenshot scrShot =((TakesScreenshot)driver);
-        File srcFile=scrShot.getScreenshotAs(OutputType.FILE);
-        File destFile=new File("Screenshots/"+"BankTest/"+status+"/"+name+status+".png");
-        FileHandler.copy(srcFile, destFile);
-    }
-
+//    public void takeScreenShot(String name, String status) throws IOException {
+//        TakesScreenshot scrShot =((TakesScreenshot)driver);
+//        File srcFile=scrShot.getScreenshotAs(OutputType.FILE);
+//        File destFile=new File("Screenshots/"+"BankTest/"+status+"/"+name+status+".png");
+//        FileHandler.copy(srcFile, destFile);
+//    }
+//    public void createLogMessage(String methodName, Boolean status){
+//        log.info(methodName + ": Succeeded");
+//    }
+//    public void createExtentReport(String methodName, Boolean status, String details){
+//        ExtentTest test = extentReports.createTest(methodName);
+//        test.pass(MediaEntityBuilder.createScreenCaptureFromPath("img.png").build());
+//        test.pass(MediaEntityBuilder.createScreenCaptureFromBase64String("base64").build());
+//        test.log(Status.PASS, details);
+//    }
 //    @AfterMethod
 //    public void afterMethod() throws Throwable {
 //
@@ -143,7 +146,6 @@ public class BankTest {
 
     @AfterClass
     public void afterClass() throws Throwable {
-        extentReports.flush();
         driver.quit();
     }
 }

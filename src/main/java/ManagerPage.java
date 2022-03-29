@@ -84,7 +84,7 @@ public class ManagerPage {
     public void selectUser(CustomerDetail customerDetail) throws InterruptedException {
         new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(userSelect));
         usersList = new Select(driver.findElement(userSelect));
-        usersList.selectByVisibleText(customerDetail.getFirstName()+" "+customerDetail.getLastName());
+        usersList.selectByVisibleText(customerDetail.getFullName());
 
     }
     //Select currency from dropdown

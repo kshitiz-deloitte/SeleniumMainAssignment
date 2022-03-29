@@ -18,8 +18,13 @@ public class CustomerLoginPage {
     public void selectUser(CustomerDetail customerDetail){
         new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(userSelect));
         userSelectE = new Select(driver.findElement(userSelect));
-        String customerName = (customerDetail.getFirstName()+" "+customerDetail.getLastName());
+        String customerName = (customerDetail.getFullName());
         userSelectE.selectByVisibleText(customerName);
+    }
+    public void selectUser(){
+        new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(userSelect));
+        userSelectE = new Select(driver.findElement(userSelect));
+        userSelectE.selectByIndex(2);
     }
     //Clicks login button
     public void clickLogin(){

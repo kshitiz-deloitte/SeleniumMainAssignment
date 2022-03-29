@@ -18,22 +18,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
-@Listeners(BankTest2Listeners.class)
 public class BankTest2 {
-    protected static Logger log;
-    protected static WebDriver driver;
-    protected static Random rand;
-    protected static ExtentReports extentReports;
-    protected static ExtentSparkReporter sparkReporter;
+//    protected Logger log1;
+    protected WebDriver driver;
+    protected Random rand;
+    protected ExtentReports extentReports;
+    protected ExtentSparkReporter sparkReporter;
     protected int MAX_VALUE = 10000;
     protected String url = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
 
     protected static LoginPage loginPage2;
     protected static CustomerLoginPage customerLoginPage2;
     protected static AccountPage accountPage2;
-    protected static CustomerDetail customerDetail2;
     protected static AccountDetail accountDetail;
-    protected  static Transactions transactions;
+    protected static Transactions transactions;
 
 
     @BeforeTest
@@ -49,22 +47,18 @@ public class BankTest2 {
         accountPage2 = new AccountPage(driver);
 
         rand = new Random();
-        log = LogManager.getLogger(BankTest2.class.getName());
+//        log1 = LogManager.getLogger(BankTest2.class.getName());
         driver.get(url);
     }
     @Test
     public void makeDeposit(){
         int randomVal = rand.nextInt(MAX_VALUE);
         loginPage2.clickCusLogin();
-        customerLoginPage2.selectUser(customerDetail2);
+        customerLoginPage2.selectUser();
         customerLoginPage2.clickLogin();
         accountPage2.clickDeposit();
         accountPage2.enterDepositAmount(randomVal);
         accountPage2.clickDepositSub();
-        Assert.assertEquals(accountDetail.getBalance()+randomVal,accountPage2.getCurrentBalance());
-        transactions.setType("Credit");
-        transactions.setAmount(randomVal);
-        accountDetail.setBalance(accountPage2.getCurrentBalance());
     }
     @Test
     public void makeWithdrawal() throws InterruptedException {
@@ -72,17 +66,7 @@ public class BankTest2 {
         accountPage2.clickWithdrawal();
         accountPage2.enterWithdrawAmount(randomVal);
         accountPage2.clickWithdrawalSub();
-        if(accountPage2.checkWithdrawError()){
-            if(accountPage2.getErrorMsg().compareTo("Transaction Failed. You can not withdraw amount more than the balance.")==0){
-                log.error(accountPage2.getErrorMsg());
-            }else {
-                log.info(accountPage2.getErrorMsg());
-            }
-        }
-        Assert.assertEquals(accountDetail.getBalance()-randomVal,accountPage2.getCurrentBalance());
-        transactions.setType("Debit");
-        transactions.setAmount(randomVal);
-        accountDetail.setBalance(accountPage2.getCurrentBalance());
+
     }
 
 //    public void takeScreenShot(String name, String status) throws IOException {
